@@ -67,6 +67,7 @@
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\Loader.cs" />
      <Compile Include="Assets\Scripts\MovingObject.cs" />
+     <Compile Include="Assets\Scripts\Wall.cs" />
      <None Include="Assets\Fonts\OFL.txt" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>H:/GameDev/Projects/Unity/2d-roguelike/2D-roguelite/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
