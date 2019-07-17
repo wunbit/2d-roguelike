@@ -39,7 +39,7 @@ public abstract class MovingObject : MonoBehaviour
     {
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
-        while (sqrRemainingDistance > float.Epsilon)
+        while (sqrRemainingDistance > 0) //using 0 instad of float.Epsilon since Epsilon might be too much, Epsilon is like 0. (45 zeroes) 1. https://stackoverflow.com/questions/30216575/why-float-epsilon-and-not-zero
         {
             Vector3 newPosition = Vector3.MoveTowards (rb2d.position, end, inverseMoveTime * Time.deltaTime);
             rb2d.MovePosition(newPosition);
