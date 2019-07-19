@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement; 
 
-public class Player : MonoBehaviour
+public class Player : MovingObject
 {
     public int wallDamage = 1;
     public int pointsPerFood = 10;
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
         GameManager.instance.playerFoodPoints = food;
     }
 
-    void Update()
+    private void Update()
     {
         if (!GameManager.instance.playersTurn)
         {
@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     protected override void AttemptMove <T> (int xDir, int yDir)
     {
         food--;
-        base.AttemptMove <T> (xDir, yDir)
+        base.AttemptMove <T> (xDir, yDir);
         RaycastHit2D hit;
         CheckIfGameOver ();
         GameManager.instance.playersTurn = false;
@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
         SceneManager.LoadScene (0);
     }
 
-        public void LoseFood (int loss)
+    public void LoseFood (int loss)
     {
         animator.SetTrigger ("playerHit");
         food -= loss;
