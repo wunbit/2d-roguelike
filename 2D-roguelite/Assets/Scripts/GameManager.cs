@@ -1,17 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public float levelStartDelay = 2f;
     public float turnDelay = 0.1f;
     public static GameManager instance = null;
+    public int playerFoodPoints = 100;
+    private int level = 0;
     private BoardManager boardScript;
-    public int level = 3;
     private List<Enemy> enemies;
     private bool enemiesMoving;
-    public int playerFoodPoints = 100;
-
+    private Text levelText;
+    private GameObject levelImage;
+    private bool doingSetup = true;
     [HideInInspector] public bool playersTurn = true;
     void Awake()
     {
@@ -26,18 +31,45 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         enemies = new List<Enemy>();
         boardScript = GetComponent<BoardManager>();
+        //InitGame();
+    }
+
+void OnEnable ()
+{
+    SceneManager.sceneLoaded += OnSceneLoaded;
+}
+
+void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        level++;
         InitGame();
     }
 
+void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
     void InitGame()
     {
+        doingSetup = true;
+        levelImage = GameObject.Find("LevelImage");
+        levelText = GameObject.Find("LevelText").GetComponent<Text>();
+        levelText.text = "Day " + level;
+        levelImage.SetActive(true);
+        Invoke("HideLevelImage", levelStartDelay);
         enemies.Clear();
         boardScript.SetupScene(level);
     }
 
+    void HideLevelImage()
+    {
+        levelImage.SetActive(false);
+        doingSetup = false;
+    }
+
     void Update()
     {
-        if (playersTurn || enemiesMoving)
+        if (playersTurn || enemiesMoving || doingSetup)
         {
             return;
         }
@@ -67,6 +99,8 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        levelText.text = "After " + level + " days, you starved.";
+        levelImage.SetActive(true);
         enabled = false;
     }
 }
